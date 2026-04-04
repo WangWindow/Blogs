@@ -1,0 +1,108 @@
+name: CMS Content Optimization
+
+on:
+  push:
+    branches:
+      - "cms/sveltia" # 监听固定的 CMS 分支
+    paths:
+      - "posts/**"
+      - "uploads/**"
+  workflow_dispatch:
+
+# 并发控制：同一分支的多次推送只处理最新的（减少历史提交）
+concurrency:
+  group: cms-optimize
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_ACCESS_TOKEN || github.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Sharp
+        run: npm install sharp --quiet
+
+      - name: Run image optimization
+        id: optimize
+        run: |
+          echo "🖼️ Starting image optimization..."
+          node scripts/optimize-images.mjs
+
+          # 检查是否有变更
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit optimized images
+        if: steps.optimize.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: optimize images"
+
+      - name: Squash merge to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "📦 Squash merging cms/sveltia to main..."
+
+          git checkout main
+          git pull origin main
+
+          # Squash merge - 所有 CMS 提交压缩为一个
+          if ! git merge --squash origin/cms/sveltia; then
+            echo "❌ Merge conflict detected"
+            git merge --abort || true
+            exit 1
+          fi
+
+          # 只在有变更时提交
+          if git diff --cached --quiet; then
+            echo "📦 No changes to merge"
+          else
+            git commit -m "content: sync from CMS"
+            git push origin main
+          fi
+
+      - name: Reset CMS branch to main (保持同步，减少历史分歧)
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN || github.token }}
+        run: |
+          # 强制将 cms/sveltia 重置为 main 的最新状态
+          # 这样下次 CMS 推送时不会有历史分歧
+          git checkout cms/sveltia
+          git reset --hard main
+          git push origin cms/sveltia --force
+
+      - name: Trigger dependent repos rebuild
+        if: success()
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: WangWindow/wangwindow.github.io
+          event-type: blog-updated
+
+      - name: Summary
+        run: |
+          echo "## 📊 CMS 内容处理完成" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 图片已优化" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 已 Squash Merge 到 main" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ CMS 分支已同步" >> $GITHUB_STEP_SUMMARY

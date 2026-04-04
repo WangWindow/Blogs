@@ -1,0 +1,26 @@
+name: Notify Dependent Repos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**'
+      - 'uploads/**'
+
+jobs:
+  trigger-rebuilds:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Pages rebuild
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: WangWindow/Pages
+          event-type: blog-updated
+
+      - name: Trigger wangwindow.github.io rebuild
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: WangWindow/wangwindow.github.io
+          event-type: blog-updated
