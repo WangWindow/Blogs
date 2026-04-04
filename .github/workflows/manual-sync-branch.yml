@@ -1,0 +1,59 @@
+name: Manual Sync main -> other branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: Source branch to sync from
+        required: true
+        default: main
+      target_branch:
+        description: Target branch to sync to
+        required: true
+        default: cms/sveltia
+
+permissions:
+  contents: write
+
+jobs:
+  sync-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_branch }}
+          fetch-depth: 0
+
+      - name: Sync source to target
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          TARGET_BRANCH: ${{ inputs.target_branch }}
+        run: |
+          if [ -z "$SOURCE_BRANCH" ] || [ -z "$TARGET_BRANCH" ]; then
+            echo "❌ source_branch or target_branch is empty"
+            exit 1
+          fi
+
+          echo "🔎 Checking if target branch exists: $TARGET_BRANCH"
+          if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" > /dev/null 2>&1; then
+            echo "🔄 Target branch exists, force-syncing $SOURCE_BRANCH -> $TARGET_BRANCH..."
+            git push origin "refs/heads/$SOURCE_BRANCH:refs/heads/$TARGET_BRANCH" --force-with-lease
+          else
+            echo "🎯 Target branch does not exist, creating and syncing $SOURCE_BRANCH -> $TARGET_BRANCH..."
+            git push origin "refs/heads/$SOURCE_BRANCH:refs/heads/$TARGET_BRANCH"
+          fi
+
+          echo "✅ $TARGET_BRANCH is now synced with $SOURCE_BRANCH"
+
+      - name: Summary
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          TARGET_BRANCH: ${{ inputs.target_branch }}
+        run: |
+          echo "## ✅ Manual branch sync completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Source: $SOURCE_BRANCH" >> $GITHUB_STEP_SUMMARY
+          echo "- Target: $TARGET_BRANCH" >> $GITHUB_STEP_SUMMARY
+          echo "- Mode: auto-create target if missing, else force-with-lease sync" >> $GITHUB_STEP_SUMMARY
