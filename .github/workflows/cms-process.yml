@@ -80,3 +80,9 @@ jobs:
           echo "- ✅ 图片已优化" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ 已合并到 main 分支" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ cms/sveltia 已同步最新 main" >> $GITHUB_STEP_SUMMARY
+
+  # 调用通知工作流
+  notify-downstream:
+    needs: process-and-merge
+    uses: ./.github/workflows/notify-update.yml
+    secrets: inherit

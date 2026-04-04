@@ -6,6 +6,7 @@ on:
     paths:
       - 'posts/**'
       - 'uploads/**'
+  workflow_call:  # 允许被其他工作流调用
 
 jobs:
   trigger-rebuilds:
