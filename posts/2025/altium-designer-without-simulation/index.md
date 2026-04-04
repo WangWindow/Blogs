@@ -1,5 +1,6 @@
 ---
 title: "Altium Designer 中没有“仿真”的问题"
+slug: "altium-designer-without-simulation"
 date: 2025-10-30T00:26:07+08:00
 tags:
   - "csdn"

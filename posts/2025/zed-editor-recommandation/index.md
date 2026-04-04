@@ -1,5 +1,6 @@
 ---
 title: "Zed 编辑器推荐(附简单的配置文件 settings.json)"
+slug: "zed-editor-recommandation"
 date: 2025-10-30T00:26:07+08:00
 tags:
   - "csdn"

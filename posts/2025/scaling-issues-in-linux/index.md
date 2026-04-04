@@ -1,5 +1,6 @@
 ---
 title: "Linux 应用程序缩放问题解决方案"
+slug: "scaling-issues-in-linux"
 date: 2025-11-08T18:53:23+08:00
 tags:
   - "settings"

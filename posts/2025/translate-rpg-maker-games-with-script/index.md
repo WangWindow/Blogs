@@ -1,5 +1,6 @@
 ---
 title: "RPG Maker 游戏文本批量翻译脚本"
+slug: "translate-rpg-maker-games-with-script"
 date: 2025-12-07T15:52:54+08:00
 tags:
   - "python"

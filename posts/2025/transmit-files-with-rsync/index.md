@@ -1,5 +1,6 @@
 ---
 title: "用 rsync 在两台服务器之间直接传文件"
+slug: "transmit-files-with-rsync"
 date: 2025-12-12T16:07:28+08:00
 tags:
   - "settings"

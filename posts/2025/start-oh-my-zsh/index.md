@@ -1,5 +1,6 @@
 ---
 title: "一键配置 Zsh + Oh My Zsh"
+slug: "start-oh-my-zsh"
 date: 2025-12-13T21:42:37+08:00
 tags:
   - "settings"

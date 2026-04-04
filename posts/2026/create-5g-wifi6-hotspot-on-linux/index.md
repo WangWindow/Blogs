@@ -1,5 +1,6 @@
 ---
 title: "在 Linux 上创建 5GHz Wi-Fi 6 热点"
+slug: "create-5g-wifi6-hotspot-on-linux"
 date: 2026-01-01T14:13:51+08:00
 tags:
   - "settings"

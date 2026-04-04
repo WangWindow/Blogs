@@ -1,5 +1,6 @@
 ---
 title: "rime 输入法配置存档"
+slug: "rime-input-method-configuration-backup"
 date: 2025-12-30T12:41:27+08:00
 tags:
   - "settings"

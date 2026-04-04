@@ -16,9 +16,14 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   optimize-and-merge:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.actor != 'github-actions[bot]' &&
+      !contains(github.event.head_commit.message, '[skip cms-optimize]'))
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +31,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.REPO_ACCESS_TOKEN || github.token }}
+          ref: cms/sveltia
+          token: ${{ github.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -55,54 +61,93 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: optimize images"
+          git commit -m "chore: optimize images [skip cms-optimize]"
+          git push origin HEAD:cms/sveltia
 
-      - name: Squash merge to main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          echo "📦 Squash merging cms/sveltia to main..."
-
-          git checkout main
-          git pull origin main
-
-          # Squash merge - 所有 CMS 提交压缩为一个
-          if ! git merge --squash origin/cms/sveltia; then
-            echo "❌ Merge conflict detected"
-            git merge --abort || true
-            exit 1
-          fi
-
-          # 只在有变更时提交
-          if git diff --cached --quiet; then
-            echo "📦 No changes to merge"
-          else
-            git commit -m "content: sync from CMS"
-            git push origin main
-          fi
-
-      - name: Reset CMS branch to main (保持同步，减少历史分歧)
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN || github.token }}
-        run: |
-          # 强制将 cms/sveltia 重置为 main 的最新状态
-          # 这样下次 CMS 推送时不会有历史分歧
-          git checkout cms/sveltia
-          git reset --hard main
-          git push origin cms/sveltia --force
-
-      - name: Trigger dependent repos rebuild
-        if: success()
-        uses: peter-evans/repository-dispatch@v3
+      - name: Create or update sync PR
+        id: sync_pr
+        uses: actions/github-script@v7
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          repository: WangWindow/wangwindow.github.io
-          event-type: blog-updated
+          github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const head = `${owner}:cms/sveltia`;
+            const base = "main";
+            const title = "content: sync from CMS";
+            const body = [
+              "Automated CMS sync PR.",
+              "",
+              "- optimized images to WebP when possible",
+              "- keeps branch history without force reset"
+            ].join("\n");
+
+            const { data: prs } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: "open",
+              head,
+              base,
+              per_page: 1,
+            });
+
+            let pr;
+            if (prs.length > 0) {
+              pr = prs[0];
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                title,
+                body,
+              });
+              core.info(`Updated PR #${pr.number}`);
+            } else {
+              const { data: created } = await github.rest.pulls.create({
+                owner,
+                repo,
+                head: "cms/sveltia",
+                base,
+                title,
+                body,
+                maintainer_can_modify: true,
+              });
+              pr = created;
+              core.info(`Created PR #${pr.number}`);
+            }
+
+            core.setOutput("number", String(pr.number));
+            core.setOutput("node_id", pr.node_id);
+
+      - name: Enable auto-merge (squash)
+        if: steps.sync_pr.outputs.node_id != ''
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          script: |
+            const pullRequestId = "${{ steps.sync_pr.outputs.node_id }}";
+
+            try {
+              await github.graphql(
+                `mutation($pullRequestId: ID!) {
+                  enablePullRequestAutoMerge(input: {
+                    pullRequestId: $pullRequestId,
+                    mergeMethod: SQUASH
+                  }) {
+                    clientMutationId
+                  }
+                }`,
+                { pullRequestId }
+              );
+              core.info("Auto-merge enabled (squash).");
+            } catch (error) {
+              core.warning(`Unable to enable auto-merge: ${error.message}`);
+            }
 
       - name: Summary
         run: |
           echo "## 📊 CMS 内容处理完成" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ 图片已优化" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ 已 Squash Merge 到 main" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ CMS 分支已同步" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 已创建/更新 cms/sveltia -> main 的同步 PR" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 已尝试启用 Squash Auto-Merge" >> $GITHUB_STEP_SUMMARY

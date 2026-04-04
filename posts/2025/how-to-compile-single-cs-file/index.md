@@ -1,5 +1,6 @@
 ---
 title: "如何只编译单个.CS文件"
+slug: "how-to-compile-single-cs-file"
 date: 2025-10-30T00:26:07+08:00
 tags:
   - "csdn"

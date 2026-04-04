@@ -1,5 +1,6 @@
 ---
 title: "为 Wine/Proton 启用 NTSYNC"
+slug: "use-ntsync-in-wine-proton"
 date: 2025-12-09T17:11:58+08:00
 tags:
   - "settings"

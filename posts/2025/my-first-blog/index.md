@@ -1,5 +1,6 @@
 ---
 title: "My First Blog"
+slug: "my-first-blog"
 date: 2025-10-30T00:26:08+08:00
 tags:
   - "csdn"

@@ -1,5 +1,6 @@
 ---
 title: "记录使用微软 Bing 的积分兑换礼品"
+slug: "record-bing-rewards"
 date: 2026-03-04T00:01:20+08:00
 tags:
   - "other"

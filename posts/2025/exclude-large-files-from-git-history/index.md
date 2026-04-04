@@ -1,5 +1,6 @@
 ---
 title: "在 Git 仓库中排除历史记录中的大文件"
+slug: "exclude-large-files-from-git-history"
 date: 2025-11-17T19:32:28+08:00
 tags:
   - "settings"

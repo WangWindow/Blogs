@@ -1,5 +1,6 @@
 ---
 title: "优雅配置 .NET SDK 环境"
+slug: "config-dotnet-sdk-env-beautifully"
 date: 2025-11-15T22:58:16+08:00
 tags:
   - "dotnet"

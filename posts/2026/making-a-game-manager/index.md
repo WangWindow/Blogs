@@ -1,5 +1,6 @@
 ---
 title: "制作了一个游戏管理器"
+slug: "making-a-game-manager"
 date: 2026-01-10T15:26:53+08:00
 tags:
   - "rust"

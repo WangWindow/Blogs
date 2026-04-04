@@ -1,5 +1,6 @@
 ---
 title: "Flatpak 安装的 QQMusic 无法显示系统托盘的问题"
+slug: "qqmusic-installed-via-flatpak-miss-the-tray-icon"
 date: 2025-12-31T10:53:49+08:00
 tags:
   - "settings"

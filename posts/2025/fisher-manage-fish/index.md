@@ -1,5 +1,6 @@
 ---
 title: "使用 fisher 管理 fish shell 插件拓展"
+slug: "fisher-manage-fish"
 date: 2025-12-13T23:38:04+08:00
 tags:
   - "settings"

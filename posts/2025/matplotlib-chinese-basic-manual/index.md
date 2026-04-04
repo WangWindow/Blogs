@@ -1,5 +1,6 @@
 ---
 title: "Matplotlib 基础使用指南：让图表支持中文显示"
+slug: "matplotlib-chinese-basic-manual"
 date: 2025-11-17T12:29:18+08:00
 tags:
   - "python"

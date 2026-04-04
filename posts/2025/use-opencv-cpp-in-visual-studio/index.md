@@ -1,5 +1,6 @@
 ---
 title: "在Visual Studio中配置使用OpenCV(C++)"
+slug: "use-opencv-cpp-in-visual-studio"
 date: 2025-10-30T00:26:07+08:00
 tags:
   - "csdn"

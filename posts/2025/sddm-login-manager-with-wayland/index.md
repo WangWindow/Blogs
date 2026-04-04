@@ -1,5 +1,6 @@
 ---
 title: "SDDM登陆界面缩放及卡顿问题（Wayland）"
+slug: "sddm-login-manager-with-wayland"
 date: 2025-10-30T00:26:07+08:00
 tags:
   - "csdn"

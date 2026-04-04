@@ -1,5 +1,6 @@
 ---
 title: "使用 Blender 进行视频剪辑"
+slug: "video-cut-in-blender"
 date: 2026-01-12T16:33:44+08:00
 tags:
   - "other"

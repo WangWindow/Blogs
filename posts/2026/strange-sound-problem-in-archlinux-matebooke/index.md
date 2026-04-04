@@ -1,5 +1,6 @@
 ---
 title: "记一次 Arch Linux 下声音调整“左右漂移”的修复指南"
+slug: "strange-sound-problem-in-archlinux-matebooke"
 date: 2026-03-19T21:32:00+08:00
 tags:
   - "settings"

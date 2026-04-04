@@ -1,5 +1,6 @@
 ---
 title: "uv 配置国内镜像加速"
+slug: "uv-mirror-config"
 date: 2025-11-27T13:06:34+08:00
 tags:
   - "python"

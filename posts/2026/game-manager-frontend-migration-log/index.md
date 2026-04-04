@@ -1,5 +1,6 @@
 ---
 title: "游戏管理器前端框架迁移日志"
+slug: "game-manager-frontend-migration-log"
 date: 2026-02-25T11:50:54+08:00
 tags:
   - "other"

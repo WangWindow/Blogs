@@ -1,5 +1,6 @@
 ---
 title: "封面插件测试"
+slug: "cover-plugin-test"
 date: 2025-11-01T20:49:46+08:00
 tags:
   - "other"

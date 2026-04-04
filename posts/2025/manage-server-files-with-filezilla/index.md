@@ -1,5 +1,6 @@
 ---
 title: "用 FileZilla 连上你的远程服务器"
+slug: "manage-server-files-with-filezilla"
 date: 2025-12-12T15:25:07+08:00
 tags:
   - "settings"

@@ -1,5 +1,6 @@
 ---
 title: "Linux使用LogiOps配置Logi鼠标"
+slug: "linux-logiops-config"
 date: 2025-10-30T00:26:07+08:00
 tags:
   - "csdn"

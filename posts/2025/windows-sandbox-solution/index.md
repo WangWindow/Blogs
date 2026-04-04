@@ -1,5 +1,6 @@
 ---
 title: "Windows 下的沙盒化方案"
+slug: "windows-sandbox-solution"
 date: 2025-11-09T20:44:23+08:00
 tags:
   - "settings"

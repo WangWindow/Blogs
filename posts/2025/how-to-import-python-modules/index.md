@@ -1,5 +1,6 @@
 ---
 title: "Python 项目中跨模块导入的正确实践"
+slug: "how-to-import-python-modules"
 date: 2025-11-27T17:22:20+08:00
 tags:
   - "python"

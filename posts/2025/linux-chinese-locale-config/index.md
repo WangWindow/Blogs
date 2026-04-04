@@ -1,5 +1,6 @@
 ---
 title: "Linux 中文设置"
+slug: "linux-chinese-locale-config"
 date: 2025-11-01T16:07:41+08:00
 tags:
   - "settings"

@@ -1,5 +1,6 @@
 ---
 title: "Linux 下运行安卓应用的最佳方式（Waydroid）"
+slug: "waydroid-in-linux"
 date: 2025-11-05T15:02:28+08:00
 tags:
   - "settings"

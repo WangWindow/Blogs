@@ -1,5 +1,6 @@
 ---
 title: "从网页自动提取题库"
+slug: "catch-qa-from-website"
 date: 2025-11-21T15:02:32+08:00
 tags:
   - "python"
