@@ -3,7 +3,7 @@ slug: test-sveltia-cms
 title: 测试 Sveltia CMS
 date: 2026-04-04T17:50:00+08:00
 description: 最近给 Pages 配置了 Sveltia CMS，测试一下效果
-cover: ./2026-03-07_20-08-31.png
+cover: ./2026-03-07_20-08-31.webp
 categories:
   - tool
 tags:
