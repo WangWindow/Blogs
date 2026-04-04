@@ -55,3 +55,11 @@ git submodule update --remote --merge
 ## 自动同步
 
 当此仓库有新提交时，会通过 GitHub Actions 触发 Pages 和 wangwindow.github.io 的自动构建。
+
+## 架构设计
+
+```
+CMS → cms/sveltia → [优化图片] → 合并到 main → 同步回 cms/sveltia
+                                      ↓
+                              通知 Pages + wangwindow.github.io 重建
+```

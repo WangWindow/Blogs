@@ -1,0 +1,82 @@
+name: CMS Content Process
+
+on:
+  push:
+    branches: [cms/sveltia]
+    paths: [posts/**, uploads/**]
+  workflow_dispatch:
+
+concurrency:
+  group: cms-process
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  process-and-merge:
+    # 跳过 bot 自己的提交，避免无限循环
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout cms branch
+        uses: actions/checkout@v4
+        with:
+          ref: cms/sveltia
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install sharp --quiet
+
+      - name: Optimize images
+        id: optimize
+        run: |
+          echo "🖼️ Running image optimization..."
+          node scripts/optimize-images.mjs
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit optimized images (if any)
+        id: commit
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "📝 No changes to commit"
+          else
+            git add -A
+            git commit -m "chore: optimize images"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Committed optimized images"
+          fi
+
+      - name: Merge to main
+        run: |
+          echo "🔀 Merging cms/sveltia into main..."
+          git fetch origin main
+          git checkout main
+          git merge cms/sveltia --no-edit -m "content: sync from CMS"
+          git push origin main
+          echo "✅ Merged to main"
+
+      - name: Sync cms/sveltia with main
+        run: |
+          echo "🔄 Syncing cms/sveltia back to main..."
+          git checkout cms/sveltia
+          git reset --hard main
+          git push origin cms/sveltia --force
+          echo "✅ cms/sveltia synced with main"
+
+      - name: Summary
+        run: |
+          echo "## 📊 CMS 内容处理完成" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 图片已优化" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 已合并到 main 分支" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ cms/sveltia 已同步最新 main" >> $GITHUB_STEP_SUMMARY
