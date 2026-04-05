@@ -15,7 +15,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const POSTS_DIR = path.join(__dirname, "..", "posts");
+const ROOT_DIR = path.join(__dirname, "..");
+const POSTS_DIR = path.join(ROOT_DIR, "posts");
+const UPLOADS_DIR = path.join(ROOT_DIR, "uploads");
 
 // 图片扩展名正则
 const IMAGE_EXTENSIONS = /\.(jpe?g|png|gif)$/i;
@@ -36,6 +38,16 @@ function formatSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(2)}MB`;
 }
 
+// 判断路径是否存在
+async function exists(targetPath) {
+  try {
+    await fs.access(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // 递归收集所有图片文件
 async function findImages(dir) {
   const images = [];
@@ -50,7 +62,7 @@ async function findImages(dir) {
         const stats = await fs.stat(fullPath);
         images.push({
           path: fullPath,
-          relativePath: path.relative(POSTS_DIR, fullPath),
+          relativePath: path.relative(ROOT_DIR, fullPath),
           size: stats.size,
           name: entry.name,
         });
@@ -107,6 +119,10 @@ async function convertToWebp(imagePath, quality) {
 
 // 解析图片路径（处理 URL 编码）
 function resolveImagePath(mdDir, imgRef) {
+  if (/^https?:\/\//i.test(imgRef) || /^data:/i.test(imgRef)) {
+    return null;
+  }
+
   // 去掉开头的 ./ 如果有
   let cleanRef = imgRef;
   if (cleanRef.startsWith("./")) {
@@ -118,7 +134,12 @@ function resolveImagePath(mdDir, imgRef) {
   } catch {
     // 如果解码失败，使用原始路径
   }
-  return path.join(mdDir, cleanRef);
+
+  if (cleanRef.startsWith("/")) {
+    return path.join(ROOT_DIR, cleanRef.replace(/^\/+/, ""));
+  }
+
+  return path.resolve(mdDir, cleanRef);
 }
 
 // 获取图片引用的 webp 版本路径
@@ -168,6 +189,10 @@ async function updateMarkdownReferences(mdFiles, convertedSet) {
         const imgRef = pattern.getRef(match);
         const imgFullPath = resolveImagePath(mdDir, imgRef);
 
+        if (!imgFullPath) {
+          continue;
+        }
+
         // 检查这个图片是否成功转换
         if (convertedSet.has(imgFullPath)) {
           const webpRef = getWebpRef(imgRef);
@@ -200,7 +225,16 @@ async function main() {
 
   // 查找所有图片
   console.log("\n📂 扫描图片文件...");
-  const images = await findImages(POSTS_DIR);
+  const scanDirs = [POSTS_DIR, UPLOADS_DIR];
+  const images = [];
+
+  for (const dir of scanDirs) {
+    if (!(await exists(dir))) {
+      continue;
+    }
+    const dirImages = await findImages(dir);
+    images.push(...dirImages);
+  }
 
   if (images.length === 0) {
     console.log("✅ 没有找到需要处理的图片文件");
@@ -213,6 +247,7 @@ async function main() {
   const convertedSet = new Set();
   let successCount = 0;
   let failCount = 0;
+  let skippedCount = 0;
   let totalOriginalSize = 0;
   let totalNewSize = 0;
 
@@ -224,8 +259,18 @@ async function main() {
     const result = await convertToWebp(image.path, quality);
 
     if (result.success) {
-      const savedPercent = (((image.size - result.newSize) / image.size) * 100).toFixed(1);
-      const webpRelPath = path.relative(POSTS_DIR, result.webpPath);
+      const savedPercentValue = ((image.size - result.newSize) / image.size) * 100;
+      const savedPercent = savedPercentValue.toFixed(1);
+      const webpRelPath = path.relative(ROOT_DIR, result.webpPath);
+
+      if (result.newSize >= image.size) {
+        await fs.unlink(result.webpPath);
+        console.log(
+          `   ⏭️  ${image.relativePath} (跳过: ${formatSize(result.newSize)} >= ${formatSize(image.size)})`
+        );
+        skippedCount++;
+        continue;
+      }
 
       console.log(
         `   ✅ ${image.relativePath} -> ${webpRelPath} (${formatSize(image.size)} -> ${formatSize(result.newSize)}, -${savedPercent}%)`
@@ -246,7 +291,7 @@ async function main() {
 
   // 更新 Markdown 引用
   console.log("\n📝 更新 Markdown 引用...\n");
-  const mdFiles = await findMarkdownFiles(POSTS_DIR);
+  const mdFiles = await findMarkdownFiles(ROOT_DIR);
   const { refLogs, totalRefs, updatedRefs } = await updateMarkdownReferences(mdFiles, convertedSet);
 
   if (refLogs.length > 0) {
