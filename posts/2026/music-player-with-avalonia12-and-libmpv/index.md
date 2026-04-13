@@ -3,7 +3,7 @@ slug: music-player-with-avalonia12-and-libmpv
 title: 使用 Avalonia 和 mpv 编写一个音乐播放器
 date: 2026-04-13T12:33:00+08:00
 description: ''
-cover: ./player.png
+cover: ./player.webp
 categories:
   - project
 tags:
@@ -20,7 +20,7 @@ sticky: false
 
 支持从一些公益网站上抓取歌曲封面和歌词（如果联网了的话）。
 
-![playlist](./playlist.png)
+![playlist](./playlist.webp)
 
 项目详见 Github：<https://github.com/WangWindow/AvaPlayer>
 
