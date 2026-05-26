@@ -5,7 +5,7 @@ date: 2025-11-17T19:32:28+08:00
 tags:
   - "settings"
 categories:
-  - "programming"
+  - "program"
 description: "在 Git 仓库中排除历史记录中的大文件（仅仅在 .gitignore 中忽略是不够的） 适用场景：误将模型权重（如 .pth、.pt、.h5）、数据集、日志等大文件提交到 Git，导致仓库体积膨胀、克隆缓慢。 🚨 问题背景 Git 的设计初衷是管理代码，而非二进制大文件。一旦你不小心将 .pth"
 cover: "./a15b4afegy1fmvjnab7dhj21hc0u0nem.webp"
 ---

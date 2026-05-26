@@ -5,7 +5,7 @@ date: 2025-11-17T12:29:18+08:00
 tags:
   - "python"
 categories:
-  - "programming"
+  - "program"
 description: "Matplotlib 基础使用指南：让图表支持中文显示 在数据可视化领域，Python 的 Matplotlib 是最经典、最广泛使用的绘图库之一。然而，许多初学者在使用 Matplotlib 绘制包含中文的图表时，常常会遇到中文显示为方框或乱码的问题。本文将带你从零开始，掌握 Matplotlib"
 cover: "./0072Vf1pgy1fodqork5ayj31cq0ygx6q.webp"
 ---

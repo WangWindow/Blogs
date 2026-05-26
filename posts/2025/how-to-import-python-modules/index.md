@@ -5,14 +5,14 @@ date: 2025-11-27T17:22:20+08:00
 tags:
   - "python"
 categories:
-  - "programming"
+  - "program"
 description: "Python 项目中跨模块导入的正确姿势 在开发稍具规模的 Python 项目时，你是否也遇到过这样的困扰： “为什么我在 A 模块里 import B 模块会报错？明明文件就在那儿啊！” 这其实不是 Python 的锅，而是模块路径管理的问题。尤其当你的项目开始分层、拆目录，或者需要从不同位置运行"
 cover: "./0072Vf1pgy1foxlhgd2lzj31hc0u0dvn.webp"
 ---
 
 # Python 项目中跨模块导入的正确姿势
 
-在开发稍具规模的 Python 项目时，你是否也遇到过这样的困扰：  
+在开发稍具规模的 Python 项目时，你是否也遇到过这样的困扰：
 **“为什么我在 A 模块里 import B 模块会报错？明明文件就在那儿啊！”**
 
 这其实不是 Python 的锅，而是**模块路径管理**的问题。尤其当你的项目开始分层、拆目录，或者需要从不同位置运行脚本时，导入问题就会频繁冒头。
@@ -61,7 +61,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 例如 `report_generator.py` 在第3层，用 `parents[3]`。
 
-✅ 优点：零配置、独立运行  
+✅ 优点：零配置、独立运行
 ⚠️ 缺点：重复代码、IDE可能报错、不适合长期维护
 
 ---

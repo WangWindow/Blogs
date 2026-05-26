@@ -6,7 +6,7 @@ tags:
   - "csdn"
   - "cpp"
 categories:
-  - "programming"
+  - "program"
 description: "在Visual Studio中配置使用OpenCV(C++)"
 ---
 

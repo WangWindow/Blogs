@@ -5,7 +5,7 @@ date: 2025-12-07T15:52:54+08:00
 tags:
   - "python"
 categories:
-  - "programming"
+  - "program"
 description: "RPG Maker 游戏文本批量翻译脚本 RPG Maker 系列游戏的文本大多存储在 JSON 或 CSV 文件中，手动翻译效率极低。如果使用 MTool 进行挂载翻译不够优雅，优先考虑内嵌汉化（即直接替换原来的文本内容）。 本文将介绍如何用 Python 脚本批量翻译 RPG Maker 游戏文"
 cover: "./1094870.webp"
 ---
@@ -33,7 +33,7 @@ RPG Maker 系列游戏的文本大多存储在 JSON 或 CSV 文件中，手动�
 
 <details>
 <summary>rpg游戏翻译文本替换.py（点击展开查看）</summary>
-    
+
 ```python
 import json
 import csv
@@ -232,10 +232,10 @@ if __name__ == "__main__":
 
 ```
 </details>
-    
+
 <details>
 <summary>rpg游戏翻译文本替换2.0.py（提高替换速度、优化了多行匹配）（点击展开查看）</summary>
-    
+
 ```python
 import json
 import csv
@@ -661,8 +661,8 @@ if __name__ == "__main__":
 ---
 
 # 附录
-    
+
 
 ![莉可的奇妙外卖任务-zh.png](./%E8%8E%89%E5%8F%AF%E7%9A%84%E5%A5%87%E5%A6%99%E5%A4%96%E5%8D%96%E4%BB%BB%E5%8A%A1-zh.webp)
-    
+
 如有疑问，欢迎留言交流！
