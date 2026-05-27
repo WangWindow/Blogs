@@ -3,7 +3,7 @@ slug: add-giscus-comment-system
 title: 在文章底部添加 Giscus 评论系统
 date: 2026-05-27T08:03:00+08:00
 description: 测试 😀
-cover: ''
+cover: ./2026-05-27_08-26-08.png
 categories:
   - tool
 tags:
