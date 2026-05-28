@@ -90,4 +90,4 @@ window.dialog.message .dialog-action-area button {
 
 所以直接修改他的 scss 代码中的设置，再利用安装脚本，这样就能一键生成相应的主题 css 了
 
-![](./20260528-212747.png)
+![](./20260528-212747.webp)
