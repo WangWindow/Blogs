@@ -3,7 +3,7 @@ slug: linux-desktop-beautify-fix-gtk-popup-flicker-flatpak-transparent
 title: Linux 桌面美化踩坑：修复 GTK 弹窗闪烁与 Flatpak 应用背景透明
 date: 2026-05-28T20:04:00+08:00
 description: 最近我在使用 WhiteSur 主题时遇到了两个极其头疼的问题：一是 Nautilus 回收站弹窗的按钮会无限闪烁；二是 Flatpak 版的 Handbrake（GTK4）背景完全镂空透明。经过一番排查，终于找到了这些现象背后的原因和解决方案，在这里记录分享一下。
-cover: ''
+cover: ./2026-05-28_14-27-40.png
 categories:
   - linux
 tags:
@@ -18,6 +18,8 @@ sticky: false
 ### 现象
 
 在使用 Nautilus（文件管理器）清空回收站时，弹出的警告窗口中，“取消”和“清空”两个按钮会在“单行并排”和“上下两行”之间疯狂切换，导致整个弹窗无限闪烁，甚至无法点击。但只要切换回原生 Adwaita 样式，问题就消失了。
+
+![](./2026-05-28_14-27-55.png)
 
 ### 原因：C 代码与 CSS 的的冲突
 
@@ -47,13 +49,15 @@ window.dialog.message .dialog-action-area button {
 
 保存并重启应用（`nautilus -q`），按钮就会按原生逻辑排列，不再闪烁了。
 
----
+***
 
 ## Flatpak Handbrake 应用背景全透明
 
 ### 现象
 
 安装了 Flatpak 版的 Handbrake（基于 GTK 4.20），打开后发现整个窗口背景是 100% 镂空的，直接透出了桌面壁纸，导致文字完全看不清。神奇的是，如果通过包管理器（如 `paru` / `pacman`）原生安装 Handbrake，背景却是正常的暗色半透明。
+
+![](./2026-05-28_19-06-30.png)
 
 ### 原因：沙盒隔离导致的基础变量丢失
 
@@ -70,6 +74,7 @@ window.dialog.message .dialog-action-area button {
 编辑 `~/.config/gtk-4.0/gtk.css`（或 `gtk-Dark.css`），在文件的最开头加上 GTK 默认的基础颜色变量：
 
 覆盖机制的原理：
+
 - 如果系统（原生环境）注入了这些变量，它们会优先生效覆盖我们写的值；
 - 如果系统没给（Flatpak 环境），这段代码就能兜底，让 `color-mix()` 能够正常计算。
 
