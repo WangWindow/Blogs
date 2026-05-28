@@ -65,7 +65,7 @@ window.dialog.message .dialog-action-area button {
 
 将主题路径添加到 HandBrake 的可访问权限。
 
-![](./20260528-222411.png)
+![](./20260528-222411.webp)
 
 ## 总结
 
