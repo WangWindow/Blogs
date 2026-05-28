@@ -55,39 +55,18 @@ window.dialog.message .dialog-action-area button {
 
 ### 现象
 
-安装了 Flatpak 版的 Handbrake（基于 GTK 4.20），打开后发现整个窗口背景是 100% 镂空的，直接透出了桌面壁纸，导致文字完全看不清。神奇的是，如果通过包管理器（如 `paru` / `pacman`）原生安装 Handbrake，背景却是正常的暗色半透明。
+安装了 Flatpak 版的 Handbrake（基于 GTK 4.20），打开后发现整个窗口背景是 100% 镂空的，直接透出了桌面壁纸，导致文字完全看不清。神奇的是，如果通过包管理器（如 `paru` / `pacman`）原生安装 Handbrake，背景却是正常的暗色半透明。然后将主题文件夹放在 ~/.themes 之后又有背景，放回 ~/.local/share/themes 之后有变成透明了
 
 ![](./2026-05-28_19-06-30.webp)
 
-### 原因：沙盒隔离导致的基础变量丢失
-
-排查时我一度以为是 Flatpak 里的旧版 GTK 不支持现代 CSS 的 `color-mix()` 语法，但事实上 Handbrake 已经是 GTK 4 了，完全支持。
-
-真正的罪魁祸首是 **Flatpak 沙盒权限与 Libadwaita 的变量注入机制**：
-
-1. **原生环境下**：GTK4 应用启动时，Libadwaita 会根据系统设置动态注入一系列全局颜色变量（如 `@window_bg_color`）。WhiteSur 主题的 CSS 借用这个变量计算透明度，比如 `background-color: color-mix(in srgb, @window_bg_color 96%, transparent);`，从而实现完美的半透明模糊。
-2. **Flatpak 环境下**：由于沙盒的严格隔离，应用有时无法通过 D-Bus 正确读取到系统的外观设置，导致 Libadwaita **没有注入** `@window_bg_color` 变量。在 CSS 中，当 `color-mix()` 试图混合一个**未定义**的变量时，这整行属性都会被判定为无效并直接丢弃。背景颜色被丢弃后，窗口就变成了 100% 的纯透明。
+### 原因：沙盒隔离导致未读取到主题
 
 ### 解决方案
 
-既然 Flatpak 拿不到这些基础变量，那就主动在自定义 CSS 的最顶端配置颜色作为兜底。
-编辑 `~/.config/gtk-4.0/gtk.css`（或 `gtk-Dark.css`），在文件的最开头加上 GTK 默认的基础颜色变量：
+将主题路径添加到 HandBrake 的可访问权限。
 
-覆盖机制的原理：
-
-- 如果系统（原生环境）注入了这些变量，它们会优先生效覆盖我们写的值；
-- 如果系统没给（Flatpak 环境），这段代码就能兜底，让 `color-mix()` 能够正常计算。
-
-> [NOTE]
->
-> 之后经过使用发现，如果直接覆盖背景设置的话，会导致深浅主题切换时原生 GTK 4 应用的标题栏还是深色，以及一些背景（如终端背景被改变）等一系列问题。
+![](./20260528-222411.png)
 
 ## 总结
 
 配置的代码地址：https://github.com/WangWindow/whitesur-gtk-4.0
-
-之后我借助 Gemin，我又发现一个更好的解决方式，由于主题来自于  https://github.com/vinceliuice/WhiteSur-gtk-theme
-
-所以直接修改他的 scss 代码中的设置，再利用安装脚本，这样就能一键生成相应的主题 css 了
-
-![](./20260528-212747.webp)
