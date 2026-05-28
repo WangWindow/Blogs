@@ -78,6 +78,16 @@ window.dialog.message .dialog-action-area button {
 - 如果系统（原生环境）注入了这些变量，它们会优先生效覆盖我们写的值；
 - 如果系统没给（Flatpak 环境），这段代码就能兜底，让 `color-mix()` 能够正常计算。
 
+> [NOTE]
+>
+> 之后经过使用发现，如果直接覆盖背景设置的话，会导致深浅主题切换时原生 GTK 4 应用的标题栏还是深色，以及一些背景（如终端背景被改变）等一系列问题。
+
 ## 总结
 
 配置的代码地址：https://github.com/WangWindow/whitesur-gtk-4.0
+
+之后我借助 Gemin，我又发现一个更好的解决方式，由于主题来自于  https://github.com/vinceliuice/WhiteSur-gtk-theme
+
+所以直接修改他的 scss 代码中的设置，再利用安装脚本，这样就能一键生成相应的主题 css 了
+
+![](./20260528-212747.png)
