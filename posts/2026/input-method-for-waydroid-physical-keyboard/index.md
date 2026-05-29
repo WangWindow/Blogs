@@ -3,7 +3,7 @@ slug: input-method-for-waydroid-physical-keyboard
 title: waydroid物理键盘的输入法推荐
 date: 2026-05-29T20:56:00+08:00
 description: 我突然想用电脑玩安卓游戏（主要是想用悟饭模拟器玩宝可梦），于是又安装了一次 waydroid，并且这次我搞了谷歌服务，但是自带的AOSP键盘不支持中文输入，Gboard 不支持键盘快捷切换输入法。遂寻找好用的输入法。
-cover: ./截图 2026-05-29 20-56-28.png
+cover: ./截图 2026-05-29 20-56-28.webp
 categories:
   - linux
 tags:
@@ -27,4 +27,4 @@ sticky: false
 
 Trime 默认使用的是 Lunar Pinyin 方案，我在 Linux 下使用的是 Rime Ice 方案，其实也可以直接迁移过去，配置就在安卓主目录下的 rime 文件夹中。不过我比较懒，就没搞了😙。
 
-![](./20260529-211719.png)
+![](./20260529-211719.webp)
