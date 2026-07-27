@@ -3,7 +3,7 @@ slug: switch-terminals-emulator-to-ghostty
 title: 终端模拟器更换为 Ghostty
 date: 2026-07-27T23:47:00+08:00
 description: ''
-cover: ./2026-07-27_23-53-34.png
+cover: ./2026-07-27_23-53-34.webp
 categories:
   - note
   - tool
@@ -40,7 +40,7 @@ sticky: false
 
 然而，刚进行 ssh 连接就出现问题了：
 
-![](./2026-07-27_21-20-37.png)
+![](./2026-07-27_21-20-37.webp)
 
 终端的字符显示混乱，并且输入也出现很乱。查阅资料得知，通常不同的终端模拟器都有自己的 terminfo，比如 ghostty-terminfo，而这个在一些比较旧的系统上就无法被识别。从而导致出现奇怪的问题。
 
@@ -50,7 +50,7 @@ sticky: false
 
 [Ghistty Help | Terminfo](https://ghostty.org/docs/help/terminfo) 给出了 2 个临时的方法解决这个问题。
 
-![](./20260728-001502.png)
+![](./20260728-001502.webp)
 
 不过我用第一个方法失败了。第二种方法其实就是连接前设置一下 `TERM` 环境变量，以便识别到是什么终端，通常 xterm 的格式是通用的，所以这里使用 xterm-256color。
 
