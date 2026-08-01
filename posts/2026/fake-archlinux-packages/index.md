@@ -3,7 +3,7 @@ slug: fake-archlinux-packages
 title: 使用 provides 避免 pacman 重复安装依赖
 date: 2026-08-01T17:40:00+08:00
 description: ''
-cover: ./2026-08-01_17-44-20.png
+cover: ./2026-08-01_17-44-20.webp
 categories:
   - note
   - linux
