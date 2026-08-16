@@ -3,7 +3,7 @@ slug: rewrite-gamemanager-from-tauri-to-iced
 title: 游戏管理器的原生重写（从 Tauri 迁移到 Iced）
 date: 2026-08-16T20:30:00+08:00
 description: 一次更换框架重写的实践。与其在 WebView 架构上反复打补丁，不如趁版本大更新把前端整个换掉。
-cover: ./pasted-image-1786880584658.png
+cover: ./pasted-image-1786880584658.webp
 categories:
   - project
 tags:
