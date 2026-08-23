@@ -3,7 +3,7 @@ slug: icoextract-rust-port
 title: 把 Python 的 icoextract 移植成 Rust 库
 date: 2026-08-16T20:40:00+08:00
 description: 为给游戏管理器提取 exe 图标，我把一个 Python 工具移植成了 Rust 库并发布到 crates.io，过程中踩了一个 2GB 样本的 PE 解析兼容坑，还在迭代过程中内存占用优化了 700 多倍（相对我自己之前的版本）。
-cover: ./2026-08-23_17-58-39.png
+cover: ./2026-08-23_17-58-39.webp
 categories:
   - project
 tags:
