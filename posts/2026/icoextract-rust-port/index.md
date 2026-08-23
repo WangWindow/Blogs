@@ -3,7 +3,7 @@ slug: icoextract-rust-port
 title: 把 Python 的 icoextract 移植成 Rust 库
 date: 2026-08-16T20:40:00+08:00
 description: 为给游戏管理器提取 exe 图标，我把一个 Python 工具移植成了 Rust 库并发布到 crates.io，过程中踩了一个 2GB 样本的 PE 解析兼容坑，还在迭代过程中内存占用优化了 700 多倍（相对我自己之前的版本）。
-cover: ''
+cover: ./2026-08-23_17-58-39.png
 categories:
   - project
 tags:
@@ -31,7 +31,7 @@ PE 解析选型上，我最初犹豫过要不要手写。资源目录的 RVA 遍
 
 架构上分成几个模块，功能用 feature 开关：
 
-```
+```plain
 pe          # PE/资源目录解析（内部使用 pelite）
 extractor   # IconExtractor：按索引或资源 ID 提取、列出
 ico         # 生成标准 ICO 字节
@@ -61,7 +61,7 @@ icon.write_ico(std::fs::File::create("app.ico")?)?;
 有意思的是，同一个文件用 Python 上游跑，一切正常：1 个组图标、6 个帧、138 KiB 的 ICO 顺利生成。于是对着 Python 的实现逐步排查，最后定位到根因：
 
 | 项目 | `Goodbye Eternity.exe` |
-|---|---:|
+| --- | --- |
 | 资源目录 RVA | `0x040e5000` |
 | 正确的 `.rsrc` 文件偏移 | `0x03f08600` |
 | 异常 `pck` 节起始 RVA | `0x040e3000` |
@@ -74,19 +74,19 @@ Python 用的 pefile 则会把一个节的有效 RVA 范围截断到下一个节
 修复方案是保留 pelite 的 PE 头解析，但资源目录的 RVA→文件偏移映射改成 pefile 同款行为：按下一个节起点截断重叠范围，显式选中 `.rsrc`。修完后 Rust 输出和 Python 输出逐字节一致，分毫不差。这个 bug 也让我学到了：拿真实样本做回归测试很重要，很多时候仅靠 mock 的测试用例是不够的。
 
 > [!NOTE]
->
+> >
 > 在测试排错过程中，我还想起了之前看**左程云**的 LeetCode 教学视频时教过的一个概念：对数器
 > 
 >  一个简单的示例如下（Java 实现）：
 > 
-> ```java
+> \`\`\`java
 > for (int i = 0; i < testTime; i++) {
 >     int[] arr1 = generateRandomArray();
 >     int[] arr2 = copyArray(arr1);
 > 
 >     mySort(arr1);
 >     Arrays.sort(arr2);
->
+> >
 >     if (!isEqual(arr1, arr2)) {
 >         System.out.println("出错了！");
 >         printArray(arr1);
@@ -94,8 +94,8 @@ Python 用的 pefile 则会把一个节的有效 RVA 范围截断到下一个节
 >         break;
 >     }
 > }
-> ```
->
+> \`\`\`
+> >
 > 实际上在开发中常被称作 “差分测试”，核心思想是比较两个实现的结果。
 > 其中拿来比较的正确程序就是 reference implementation / oracle
 
@@ -108,7 +108,7 @@ Python 用的 pefile 则会把一个节的有效 RVA 范围截断到下一个节
 优化后的实测结果：
 
 | 输入 | 结果 |
-|---|---|
+| --- | --- |
 | `Goodbye Eternity.exe`（约 2GB） | 成功提取 ICO，140,799 B；峰值 RSS **5,384 KiB** |
 | `geek.exe` | 成功提取 ICO，154,056 B |
 
