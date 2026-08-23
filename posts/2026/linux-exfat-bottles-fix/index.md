@@ -3,7 +3,7 @@ slug: linux-exfat-bottles-fix
 title: Linux 踩坑记录：解决 exFAT 移动硬盘双击 exe 无法唤起 Bottles 的问题
 date: 2026-04-15T21:58:00+08:00
 description: 详细记录并彻底解决 Linux (GNOME) 环境下，因 exFAT 文件系统挂载权限导致无法双击唤起 Bottles 的“静默失败”问题。深入剖析 fmask/dmask 挂载参数与 Flatpak 沙盒权限配置原理。
-cover: ''
+cover: ./2026-08-23_17-38-35.png
 categories:
   - linux
 tags:
