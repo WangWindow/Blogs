@@ -3,7 +3,7 @@ slug: use-curl
 title: 使用 curl
 date: 2026-08-23T16:46:00+08:00
 description: curl 是一个通用的网络请求客户端，支持 HTTP API、上传/下载、调试请求、认证、代理、多协议。功能十分强大，但是之前一般都是直接复制粘贴命令，没有仔细学习一下各个参数的具体含义，所以今天通过 GPT 帮我总结了一下
-cover: ''
+cover: ./curl.png
 categories:
   - tool
 tags:
@@ -135,7 +135,7 @@ curl -fsSL https://example.com/install.sh | less
 确认内容后再执行。
 
 > [!TIP]
->
+> >
 > 还支持断续传，添加 `-C` 参数以支持。
 
 ## 网络请求功能
