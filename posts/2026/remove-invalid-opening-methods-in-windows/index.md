@@ -3,7 +3,7 @@ slug: remove-invalid-opening-methods-in-windows
 title: 移除windows中的失效的打开方式
 date: 2026-09-01T18:18:00+08:00
 description: 通过修改注册表，移除windows中的失效的打开方式
-cover: ./2026-09-01_17-50-40-1.png
+cover: ./2026-09-01_17-50-40-1.webp
 categories:
   - note
 tags:
