@@ -1,9 +1,9 @@
 ---
 slug: disable-sudo-message-file-at-home-dir
-title: 禁用 sudo 时在用户目录下创建的 .sudo_as_admin_successful 文件
+title: 禁用在使用 sudo 时创建的 .sudo_as_admin_successful 文件
 date: 2026-09-20T22:17:00+08:00
 description: 这是个没用的提示文件，删除后使用 sudo 命令有会重新创建，这样很不好💥！
-cover: ''
+cover: ./54603466.png
 categories:
   - linux
 tags:
