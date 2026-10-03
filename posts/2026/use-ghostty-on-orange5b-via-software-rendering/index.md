@@ -3,7 +3,7 @@ slug: use-ghostty-on-orange5b-via-software-rendering
 title: Orange Pi 5B 上通过软件渲染使用 Ghostty
 date: 2026-10-03T19:41:00+08:00
 description: 之前桌面一直在用 Ghostty，在普通的 x86 Linux 上基本没有遇到什么图形相关的问题。最近把 Orange Pi 5B 也装上 GNOME 当作一台小桌面使用，顺手安装 Ghostty，结果刚打开就翻车了🥲。
-cover: ./截图 2026-10-03 19-47-11.png
+cover: ./截图 2026-10-03 19-47-11.webp
 categories:
   - linux
   - tool
@@ -37,7 +37,7 @@ sticky: false
 
 这里使用 vendor 6.1 内核主要是因为还需要使用 RK3588 的 RKNPU。GPU 则通过 Armbian 自带的 `panthor-gpu` overlay 使用 Panthor。
 
-![](./20261003-194922.png)
+![](./20261003-194922.webp)
 
 <details>
 <summary> 启用 Mali-G610 硬件加速 </summary>
