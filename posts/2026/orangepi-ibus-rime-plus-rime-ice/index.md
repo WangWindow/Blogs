@@ -6,7 +6,7 @@ description: |-
   最近在 Orange Pi 5B 的 Armbian 上配置中文输入法，准备继续使用 ibus-rime + 雾凇拼音。
   不过直接通过 APT 安装时，会附带安装不少其他 Rime 输入方案。另外，雾凇拼音本身不由 APT 管理，后续更新需要单独处理。
   最终决定使用 APT 管理输入法引擎，Git 管理雾凇拼音配置，不需要自行编译。
-cover: ./rime.png
+cover: ./rime.webp
 categories:
   - tool
 tags:
