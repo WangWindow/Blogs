@@ -3,7 +3,7 @@ slug: foot-terminal-emulator
 title: Foot 终端模拟器配置
 date: 2026-10-20T11:59:00+08:00
 description: RK3588 上使用 Ghostty 不支持 GPU 加速渲染，于是寻找更轻量的 wayland 终端模拟器
-cover: ./截图 2026-10-20 12-13-18.png
+cover: ./截图 2026-10-20 12-13-18.webp
 categories:
   - tool
   - note
@@ -33,7 +33,7 @@ RK3588 上使用 Ghostty 不支持 GPU 加速渲染，于是寻找更轻量的 w
 - Sixel image support
 - ...
 
-![tux-with-foot](./sixel-tux-foot.png)
+![tux-with-foot](./sixel-tux-foot.webp)
 
 
 ***
