@@ -3,7 +3,7 @@ slug: zed-extension-godotfiles
 title: 开发了一个 zed 的 godot 插件
 date: 2026-11-12T14:35:00+08:00
 description: 我做了一个 Godot Files for Zed，把 Godot 项目里常见文件的编辑体验补进 Zed。
-cover: ./2026-11-12_14-40-24.png
+cover: ./2026-11-12_14-40-24.webp
 categories:
   - program
 tags:
