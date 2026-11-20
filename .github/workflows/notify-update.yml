@@ -6,7 +6,6 @@ on:
     paths:
       - 'posts/**'
       - 'uploads/**'
-  workflow_call:  # 允许被其他工作流调用
   workflow_dispatch:  # 允许在 GitHub Actions 页面手动运行
 
 jobs:

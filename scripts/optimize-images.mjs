@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
- * 图片优化脚本
+ * 图片优化脚本（手动 / 遗留）
+ *
+ * 注意：CMS 已切换为 Preview Workflow，图片在浏览器上传时就会转成 WebP，
+ * CI 不再运行此脚本。保留此脚本用于本地批量处理历史图片。
  *
  * 功能：
  * - 检测 posts 目录下所有 jpg/png/gif/jpeg 图片
